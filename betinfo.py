@@ -12,6 +12,7 @@ import mechanize
 import sys, getopt
 import traceback
 import time
+import random
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -46,20 +47,28 @@ def loadFetchurls(config):
         urls.append( (rstart,url) )
     return urls
 
-def getTableFromPage(url, request):
+def getTableFromPage(url, request, charset):
     br = mechanize.Browser()
+    br.set_handle_equiv(True)
+    br.set_handle_gzip(True)
+    br.set_handle_redirect(True)
+    br.set_handle_referer(True)
+    br.set_handle_robots(False)
+    br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
+    br.addheaders = [('User-agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1')]
     response = br.open(url)
-    response = br.reload()
+    '''
     charset = 'gb2312'
     try:
         responseInfo = str(response.info())
         charsetIdx = responseInfo.index('charset=')
         charset = responseInfo[charsetIdx+8:-1]
-        print '\tget charset=%s url: %s\n' % (charset, url)
+        print '\tget charset=%s url: %s' % (charset, url)
     except:
         print traceback.print_exc()
-        print response.read()
-        charset = 'gb2312'
+        print '\n\n\n%s\n\n\n' % str(response.info())
+        sys.exit(-1)
+    '''
     body = unicode(response.read(), charset)
     page = BeautifulSoup(body, 'html5lib')
     if len(request) == 0:
@@ -185,13 +194,16 @@ if __name__ == '__main__':
 
     tableContext = TableContext(config, config['round_interval'])
     tableProperty = config['table_property']
+    charset = config['charset']
+    print 'get charset=%s' % charset
 
     for roundId, url in urls:
-        print '--->roundId = %05d; %s\n' % (roundId, url)
-        tbs = getTableFromPage(url, tableProperty)
+        print '--->roundId = %05d; %s' % (roundId, url)
+        tbs = getTableFromPage(url, tableProperty, charset)
         if len(tbs) == 0:
             print '\tfind no table in page. bad. coninue'
             continue
         tableContext.parseTable(roundId, tbs[0])
-        time.sleep(1)
+
+        time.sleep(random.randint(1,5))
 
