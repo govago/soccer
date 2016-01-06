@@ -1,0 +1,28 @@
+{
+    
+    "url_pattern" : "http://sports.sina.com.cn/data/caculator/sfc/${round}.html",
+    "round_interval" : "16001-16002",
+    "table_column" : "联赛\t序号\t主队\t时间\t客队\t赛果\t彩果\t数据\t亚盘\t欧赔\t调查/计算器\t预测",
+    "select_column" : "0,1,2,3,4,5,6",
+    "match_column" : 1,
+    "common_column" : "0",
+    "output_path" : "data/sina.bet.info",
+    "table_property" : "",
+    "table_has_header" : "yes",
+    "table_last_row" : 15,
+    "follow_link" :
+    {
+        "base" : 
+        {
+            "column" : "7",
+            "page_style" : "sina.base.json",
+            "links_path" : "data/sina.bet.base.follows"
+        },
+        "europe" : 
+        {
+            "column" : "9",
+            "page_style" : "sina.europe.json",
+            "links_path" : "data/sina.bet.europe.follows"
+        }
+    }
+}
