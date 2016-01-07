@@ -38,11 +38,13 @@ def loadFetchurls(config):
         rend = int(rifs[1])
         round = rstart
         while round <= rend:
+            #url = config['url_pattern'].replace('${round}', '%05d'%round)
             url = config['url_pattern'].replace('${round}', str(round))
             urls.append( (round,url) )
             round += 1
     else:
         rstart = int(ri)
+        #url = config['url_pattern'].replace('${round}', '%05d'%rstart)
         url = config['url_pattern'].replace('${round}', str(rstart))
         urls.append( (rstart,url) )
     return urls
