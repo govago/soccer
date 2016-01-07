@@ -149,6 +149,9 @@ class TableContext:
             if self._header and i == 0:
                 continue
             tds = trs[i].find_all('td')
+            if len(tds) < self._columns - len(self._commons):
+                print '!!!!not full @roundId=%d, return' % roundId
+                return
             if len(tds) == self._columns:
                 for idx in self._commons:
                     self._commonValues[idx] = unicode(tds[idx].string)
