@@ -1,7 +1,7 @@
 {
     
     "url_pattern" : "http://sports.sina.com.cn/data/caculator/sfc/${round}.html",
-    "round_interval" : "09043-09109",
+    "round_interval" : "08001-08047",
     "table_column" : "联赛\t序号\t主队\t时间\t客队\t赛果\t彩果\t数据\t亚盘\t欧赔\t调查/计算器\t预测",
     "select_column" : "0,1,2,3,4,5,6",
     "match_column" : 1,
