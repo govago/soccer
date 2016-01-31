@@ -1,7 +1,7 @@
 {
     "urls_file" : "data/sina.europe.follows.16001-16002",
-    "output_mode" : "w",
+    "output_mode" : "a+",
     "output_path" : "data/sina.bet.europe",
-    "round_interval" : "08001-08047",
+    "round_interval" : "16001-16002",
     "charset" : "utf-8"
 }

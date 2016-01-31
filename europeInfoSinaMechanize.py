@@ -10,7 +10,6 @@ import traceback
 import time
 import random
 import os
-from splinter import Browser
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -39,21 +38,26 @@ class EuropePage(PageDealer):
             self._request = request
         print 'pick url: %s with request: %s' % \
                 (self._url, self._request)
-        #br.addheaders = [('User-agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1')]
-        br.visit(self._url)
-        body = unicode(br.html)#, self._charset)
+        br = mechanize.Browser()
+        br.set_handle_equiv(True)
+        br.set_handle_gzip(True)
+        br.set_handle_redirect(True)
+        br.set_handle_referer(True)
+        br.set_handle_robots(False)
+        br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
+        br.addheaders = [('User-agent', 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1')]
+        response = br.open(self._url)
+        body = unicode(response.read(), self._charset)
         page = BeautifulSoup(body, 'html5lib')
         goodBody = page.find('body', id='sortable')
         if len(self._request) == 0:
             tables = goodBody.find_all('table')
         else:
             tables = goodBody.find_all('table', self._request)
-        #br.windows.current.close()
         return tables
     def parse(self, tables):
         print 'start parse table[0] in url: %s' % self._url
         trs = tables[0].find_all('tr')
-        companyName = ''
         for tr in trs[2:]:
             tds = tr.find_all('td')
             startIdx = 0
@@ -67,10 +71,9 @@ class EuropePage(PageDealer):
             retInfo += '\t'
             if len(tds) == 13:
                 companyName = unicode(tds[1].string)
-                retInfo += companyName + '\t'
-                startIdx = 2
             else:
                 retInfo += companyName + '\t'
+                startIdx += 1
             for td in tds[startIdx:]:
                 retInfo += unicode(td.string) + '\t'
             retInfo += '\n'
@@ -80,21 +83,17 @@ class EuropePage(PageDealer):
 
 def yieldPage(config, urlfi):
     line = urlfi.readline().strip()
-    while len(line) > 2:
-        while -1 == line.find('m_id'):
-            print 'bad url: %s' % line
-            line = urlfi.readline().strip()
-        fs = line.split('\t')
-        roundId = fs[0]
-        url = fs[1]
-        config['url'] = url
-        config['round'] = roundId
-        print 'set config for url: %s; round: %s' % \
-                (config['url'], config['round'])
-        yield EuropePage(config)
-        line = urlfi.readline().strip()
-    urlfi.close()
-    return
+    if len(line) < 2:
+        urlfi.close()
+        return
+    fs = line.split('\t')
+    roundId = fs[0]
+    url = fs[1]
+    config['url'] = url
+    config['round'] = roundId
+    print 'set config for url: %s; round: %s' % \
+            (config['url'], config['round'])
+    yield EuropePage(config)
 
 import pdb
 if __name__ == '__main__':
@@ -112,8 +111,8 @@ if __name__ == '__main__':
     urlfile = config['urls_file']
     urlfi = open(urlfile, 'r')
     tableRequest = {'id':'dongtaiOuPan'}
-    br = Browser('firefox')
     for page in yieldPage(config, urlfi):
+        pdb.set_trace()
         tables = page.pick(tableRequest)
         follows = page.parse(tables)
         while len(follows) > 0:
@@ -123,6 +122,4 @@ if __name__ == '__main__':
             if len(tmpFollows) > 0:
                 for tf in tmpFollows:
                     follows.append(tf)
-    br.windows.current.close()
-
 

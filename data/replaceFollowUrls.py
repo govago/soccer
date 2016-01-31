@@ -20,6 +20,8 @@ if __name__ == '__main__':
     fo = open(outputFile, 'w')
     for line in fi.readlines():
         fs = line.strip().split('\t')
+        if -1 == fs[1].find('m_id='):
+            continue
         mid = fs[1].split('m_id=')[1]
         fo.write('%s\t%s\n' % \
                 (fs[0], destUrl+mid))
