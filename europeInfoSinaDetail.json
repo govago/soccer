@@ -1,0 +1,9 @@
+{
+    "bidmid_file" : "data/BetIdMatchId",
+    "output_mode" : "a+",
+    "output_path" : "data/sina.bet.europe.detail",
+    "except_mode" : "a+",
+    "except_path" : "data/sina.bet.europe.detail_except",
+    "round_interval" : "14022-15151",
+    "charset" : "utf-8"
+}
