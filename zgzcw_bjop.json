@@ -1,0 +1,69 @@
+{
+    "url" : "http://fenxi.zgzcw.com/1506028/bjop",
+    "params" : "betid,url",
+    "tables" :
+    {
+        "zhuliu_op" :
+        {
+            "prepare_op" : "click",
+            "prepare_xpath" : "//*[@id=\"com-type\"]/option[2]",
+            "output_file" : "zgzcw_zhuliu_op.dat",
+            "output_mode" : "a+",
+            "xpath" : "//*[@id=\"data-body\"]/table",
+            "skip_prefix" : "0",
+            "header" : "betid\t公司\t初始赔率-胜\t初始赔率-平\t初始赔率-负\t最赔率-胜\t最新赔率-平\t最新赔率-负\t最新概率(%)-主\t最新概率(%)-平\t最新概率(%)-客\t最新凯利指数-主\t最新凯利指数-平\t最新凯利指数-客\t赔付率",
+            "columns" : "1,2,3,4,5,6,7,9,10,11,12,13,14,15",
+            "window" : "op_detail",
+            "window_refresh_mode" : "line",
+            "window_params" : 
+            {
+                "url" : "@td[5]@a@href",
+                "betid" : "@P@betid",
+                "decode_url" : "@@url>>url_decode",
+                "company_id" : "@@decode_url@[company_id=:&]",
+                "company" : "@@decode_url@[company=:]"
+            }
+        },
+        "jiaoyi_op" :
+        {
+            "prepare_op" : "click",
+            "prepare_xpath" : "//*[@id=\"com-type\"]/option[3]",
+            "output_file" : "zgzcw_zhuliu_op.dat",
+            "output_mode" : "a+",
+            "xpath" : "//*[@id=\"data-body\"]/table",
+            "skip_prefix" : "0",
+            "header" : "betid\t公司\t初始赔率-胜\t初始赔率-平\t初始赔率-负\t最赔率-胜\t最新赔率-平\t最新赔率-负\t最新概率(%)-主\t最新概率(%)-平\t最新概率(%)-客\t最新凯利指数-主\t最新凯利指数-平\t最新凯利指数-客\t赔付率",
+            "columns" : "1,2,3,4,5,6,7,9,10,11,12,13,14,15",
+            "window" : "op_detail",
+            "window_refresh_mode" : "line",
+            "window_params" : 
+            {
+                "url" : "@td[5]@a@href",
+                "betid" : "@P@betid",
+                "decode_url" : "@@url>>url_decode",
+                "company_id" : "@@decode_url@[company_id=:&]",
+                "company" : "@@decode_url@[company=:]"
+            }
+        }
+    },
+    "windows" : 
+    {
+        "op_detail" :
+        {
+            "url_prefix" : "http://fenxi.zgzcw.com",
+            "params" : "url,betid,company_id,company",
+            "tables" : 
+            {
+                "op_detail" :
+                {
+                    "output_file" : "zgzcw_op_detail.dat",
+                    "output_mode" : "a+",
+                    "xpath" : "/html/body/div[2]/div/table",
+                    "skip_prefix" : "2",
+                    "header" : "betid\tcompany_id\tcompany\t时间\t更新\t赔率-胜\t赔率-平\t赔率-负\t最新概率(%)-主\t最新概率(%)-客\t凯利指数-主\t凯利指数-客\t赔付率",
+                    "columns" : "1,2,3,4,5,6,7,8,9,10"
+                }
+            }
+        }
+    }
+}

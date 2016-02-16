@@ -1,0 +1,50 @@
+{
+    "url" : "http://fenxi.zgzcw.com/1506028/bfyc",
+    "params" : "betid,url",
+    "base" :
+    {
+        "output_file" : "zgzcw_base.dat",
+        "output_mode" : "a+",
+        "主队" : "/html/body/div[6]/div[2]/div/div[1]/a",
+        "客队" : "/html/body/div[6]/div[2]/div/div[2]/a",
+        "时间" : "/html/body/div[6]/div[3]/div[1]/span",
+        "赛果" : "/html/body/div[6]/div[2]/div/div[3]",
+        "赛事" : "//*[@id=\"lc_head\"]/h2/p",
+        "主排名" : "/html/body/div[6]/div[2]/div/div[6]/div[1]",
+        "客排名" : "/html/body/div[6]/div[2]/div/div[6]/div[3]"
+    },
+    "tables" :
+    {
+        "zd_last_10" :
+        {
+            "output_file" : "zgzcw_zd_last_10.dat",
+            "output_mode" : "a+",
+            "xpath" : "//*[@id=\"hostList\"]/div[1]/div/table",
+            "skip_prefix" : "1",
+            "header" : "betid\t赛事\t轮次\t比赛时间\t主队\t比分(半场)\t客队\t进球数",
+            "columns" : "0,1,2,3,4,5,6",
+            "common_header" : "近期战绩",
+            "common_xpath" : "//*[@id=\"hostList\"]/div[2]/div[2]"
+        },
+        "kd_last_10" :
+        {
+            "output_file" : "zgzcw_kd_last_10.dat",
+            "output_mode" : "a+",
+            "xpath" : "//*[@id=\"guestList\"]/div[1]/div/table",
+            "skip_prefix" : "1",
+            "header" : "betid\t赛事\t轮次\t比赛时间\t主队\t比分(半场)\t客队\t进球数",
+            "columns" : "0,1,2,3,4,5,6",
+            "common_header" : "近期战绩",
+            "common_xpath" : "//*[@id=\"guestList\"]/div[2]/div[2]"
+        },
+        "jiaozhan" :
+        {
+            "output_file" : "zgzcw_jiaozhan.dat",
+            "output_mode" : "a+",
+            "xpath" : "//*[@id=\"recordBox\"]/table",
+            "skip_prefix" : "1",
+            "header" : "betid\t赛事\t轮次\t比赛时间\t主队\t比分(半场)\t客队",
+            "columns" : "0,1,2,3,4,5"
+        }
+    }
+}
