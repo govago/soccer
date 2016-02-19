@@ -1,6 +1,8 @@
 {
     "url" : "http://fenxi.zgzcw.com/1506028/bjop",
     "params" : "betid,url",
+    "browser" : "zgzcw_op",
+    "fail_record" : "zgzcw_op_except",
     "tables" :
     {
         "zhuliu_op" :
@@ -54,6 +56,7 @@
         {
             "url_prefix" : "http://fenxi.zgzcw.com",
             "params" : "url,betid,company_id,company",
+            "browser" : "zgzcw_op_detail",
             "tables" : 
             {
                 "op_detail" :
