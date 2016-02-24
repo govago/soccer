@@ -2,7 +2,7 @@
     "url" : "http://fenxi.zgzcw.com/1506028/bjop",
     "params" : "betid,url",
     "browser" : "zgzcw_op",
-    "fail_record" : "zgzcw_op_except",
+    "fail_record" : "zgzcw_bjop_except",
     "tables" :
     {
         "zhuliu_op" :
@@ -17,21 +17,21 @@
             "columns" : "1,2,3,4,5,6,7,9,10,11,12,13,14,15",
             "id_columns" : "@P@betid",
             "window" : "op_detail",
-            "window_refresh_mode" : "tr",
+            "window_mode" : "tr",
             "window_params" : 
             {
                 "url" : "@td[5]@a@href",
                 "betid" : "@P@betid",
-                "decode_url" : "@@url>>url_decode",
-                "company_id" : "@@decode_url@[company_id=:&]",
-                "company" : "@@decode_url@[company=:]"
-            }
+                "company_id" : "__url@[company_id=:&]",
+                "company" : "__url@[company=:]|url_decode"
+            },
+            "window_params_order" : "url,betid,company_id,company"
         },
         "jiaoyi_op" :
         {
             "prepare_op" : "click",
             "prepare_xpath" : "//*[@id=\"com-type\"]/option[3]",
-            "output_file" : "zgzcw_zhuliu_op.dat",
+            "output_file" : "zgzcw_jiaoyi_op.dat",
             "output_mode" : "a+",
             "xpath" : "//*[@id=\"data-body\"]/table",
             "skip_prefix" : "0",
@@ -39,15 +39,15 @@
             "columns" : "1,2,3,4,5,6,7,9,10,11,12,13,14,15",
             "id_columns" : "@P@betid",
             "window" : "op_detail",
-            "window_refresh_mode" : "tr",
+            "window_mode" : "tr",
             "window_params" : 
             {
                 "url" : "@td[5]@a@href",
                 "betid" : "@P@betid",
-                "decode_url" : "@@url>>url_decode",
-                "company_id" : "@@decode_url@[company_id=:&]",
-                "company" : "@@decode_url@[company=:]"
-            }
+                "company_id" : "__url@[company_id=:&]",
+                "company" : "__url@[company=:]|url_decode"
+            },
+            "window_params_order" : "url,betid,company_id,company"
         }
     },
     "windows" : 
@@ -57,6 +57,7 @@
             "url_prefix" : "http://fenxi.zgzcw.com",
             "params" : "url,betid,company_id,company",
             "browser" : "zgzcw_op_detail",
+            "fail_record" : "zgzcw_bjop_detail_except",
             "tables" : 
             {
                 "op_detail" :

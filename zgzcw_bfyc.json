@@ -2,10 +2,12 @@
     "url" : "http://fenxi.zgzcw.com/1506028/bfyc",
     "params" : "betid,url",
     "browser" : "zgzcw_bfyc",
+    "fail_record" : "zgzcw_bfyc_except",
     "base" :
     {
         "output_file" : "zgzcw_base.dat",
         "output_mode" : "a+",
+        "column_order" : "betid,主队,客队,时间,赛果,赛事,主排名,客排名",
         "betid" : "@P@betid",
         "主队" : "@XPATH@/html/body/div[6]/div[2]/div/div[1]/a",
         "客队" : "@XPATH@/html/body/div[6]/div[2]/div/div[2]/a",

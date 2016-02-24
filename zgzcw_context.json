@@ -1,0 +1,20 @@
+{
+    "params" : "round_interval,data_path,url_file",
+    "round_interval" : "2011002-2011060",
+    "data_path" : ".\\data\\",
+    "url_file" : ".\\data\\zgzcw_bet_info.dat",
+    "pages":
+    {
+        "zgzcw_bfyc" :
+        {
+            "page_config" : "zgzcw_bfyc.json",
+            "data_files" : "zgzcw_base.dat,zgzcw_zd_last_10.dat,zgzcw_kd_last_10.dat,zgzcw_jiaozhan.dat"
+        },
+        "zgzcw_bjop" : 
+        {
+            "page_config" : "zgzcw_bjop.json",
+            "data_files" : "zgzcw_zhuliu_op.dat,zgzcw_jiaoyi_op.dat,zgzcw_op_detail.dat",
+            "url_change" : "bfyc>>bjop"
+        }
+    }
+}
