@@ -42,6 +42,9 @@ class PageContext:
         self._roundInterval = config['round_interval']
         self._startRound = fields[0]
         self._endRound = fields[1]
+        self._urlFileFields = int(config['url_file_fields'])
+        self._urlBetidIdx = int(config['url_file_betid_idx'])
+        self._urlUrlIdx = int(config['url_file_url_idx'])
         self._pages = []
         for k,v in config['pages'].items():
             self._pages.append(v)
@@ -50,14 +53,14 @@ class PageContext:
         line = fi.readline().strip()
         while len(line) > 2:
             fs = line.split('\t')
-            if len(fs) < 3:
+            if len(fs) < self._urlFileFields:
                 line = fi.readline().strip()
                 continue
-            betid = fs[0]
+            betid = fs[self._urlBetidIdx]
             if betid[:7] < self._startRound or betid[:7] > self._endRound:
                 line = fi.readline().strip()
                 continue
-            url = fs[2]
+            url = fs[self._urlUrlIdx]
             print 'yield round: %s, url: %s' % (betid, url)
             yield (betid, url)
             line = fi.readline().strip()
@@ -87,14 +90,34 @@ class PageContext:
                 newName = self._dataPath + df + '.%s' % self._roundInterval
                 if os.path.exists(df):
                     shutil.move(df, newName)
+    def moveDataWithExcept(self, curBetid):
+        roundInterval = self._roundInterval
+        startRound = int(roundInterval.split('-')[0])
+        curRound = int(curBetid.split('-')[0])
+        curRound = curRound - 1
+        if curRound < startRound:
+            return
+        for page in self._pages:
+            dfs = page['data_files'].strip().split(',')
+            for df in dfs:
+                newName = self._dataPath + df + '.%d-%d' % (startRound, curRound)
+                if os.path.exists(df):
+                    shutil.move(df, newName)
+        return
     def process(self):
         dealPageNum = 0
-        for betid, url in self.yieldRound():
-            self.dealPages(betid, url)
-            dealPageNum += 1
-            if dealPageNum > 0 and dealPageNum % 14 == 0:
-                print 'close browser when dealPageNum=%d' % dealPageNum
-                BrowserManager.closeBrowser()
-        #move data at current directory to destination directory
-        self.moveData()
+        curBetid = None
+        try:
+            for betid, url in self.yieldRound():
+                curBetid = betid
+                self.dealPages(betid, url)
+                dealPageNum += 1
+                if dealPageNum > 0 and dealPageNum % 14 == 0:
+                    print 'close browser when dealPageNum=%d' % dealPageNum
+                    BrowserManager.closeBrowser()
+            #move data at current directory to destination directory
+            self.moveData()
+        except:
+            traceback.print_exc()
+            self.moveDataWithExcept(curBetid)
 

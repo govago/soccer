@@ -14,6 +14,7 @@ from splinter import Browser
 import traceback
 from urllib import unquote
 import pdb
+import copy
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -200,6 +201,9 @@ class PageProcessor:
                     idxStr = fields[1][1:-1].split(':')
                     startStr = idxStr[0]
                     endStr = idxStr[1]
+                    if windowParam[fields[0]].find(startStr) == -1:
+                        windowParam[k] = 'None'
+                        continue
                     startIdx = windowParam[fields[0]].find(startStr) + \
                             len(startStr)
                     endIdx = -1
@@ -238,7 +242,11 @@ class PageProcessor:
                     ele = bs4Element.find(eleName)
                 for subEle in fields[1:-1]:
                     ele = ele.find(subEle)
-                windowParam[k] = ele[key]
+                if key.startswith('.'):
+                    eleValStr = 'ele%s' % key
+                    windowParam[k] = eval(eleValStr)
+                else:
+                    windowParam[k] = ele[key]
             else:
                 print 'bad param: (%s,%s). when deal with window: %s' % \
                         (k, v, tbConfig['window'])
@@ -308,7 +316,8 @@ class PageProcessor:
                     columnInfo = ''
                     tds = tr.find_all('td')
                     for idx in columnIdxList:
-                        columnInfo += unicode(tds[idx].text) + '\t'
+                        if idx < len(tds):
+                            columnInfo += unicode(tds[idx].text) + '\t'
                     oneLine = (idInfo+columnInfo+commonInfo).strip('\t')
                     fo.write('%s\n' % oneLine)
                     if tbConfig.has_key('window') and \
@@ -327,12 +336,47 @@ class PageProcessor:
                 columnInfo = ''
                 tds = tr.find_all('td')
                 for idx in columnIdxList:
-                    columnInfo += unicode(tds[idx].text) + '\t'
+                    if idx < len(tds):
+                        columnInfo += unicode(tds[idx].text) + '\t'
                 oneLine = (idInfo+columnInfo+commonInfo).strip('\t')
                 fo.write('%s\n' % oneLine)
                 if tbConfig.has_key('window') and \
                         tbConfig['window_mode'] == 'tr':
                     self._windowPage.append(self.__dealWindow(tbConfig, tr)) 
+        #deal with same column rows
+        if tbConfig.has_key('same_columns'):
+            sameRowIdxs = [int(i) for i in tbConfig['same_row_index'].strip().split(',')]
+            sameValues = [i for i in tbConfig['same_columns'].strip().split(',')]
+            sameColIdxs = [int(i) for i in tbConfig['same_index'].strip().split(',')]
+            for rowIdx in sameRowIdxs:
+                tr = trs[rowIdx]
+                fillTr = copy.copy(tr)
+                try:
+                    if tr['style'] == 'display: none;':
+                        continue
+                except:
+                    pass
+                columnInfo = ''
+                tds = tr.find_all('td')
+                for sIdx in sameColIdxs:
+                    tds.insert(sIdx, sameValues[sIdx])
+                    #insert same values in coulumns of the tr, avoid deal windows
+                    #parameters error. keep the same size tr.
+                    tdStr = '<table><tr><td>' + sameValues[sIdx] + '</td></tr></table>'
+                    fillTd = BeautifulSoup(tdStr, 'html5lib')
+                    fillTd = fillTd.find('td')
+                    fillTr.insert(sIdx, fillTd)
+                for idx in columnIdxList:
+                    if idx < len(tds):
+                        if idx in sameColIdxs:
+                            columnInfo += unicode(tds[idx]) + '\t'
+                        else:
+                            columnInfo += unicode(tds[idx].text) + '\t'
+                oneLine = (idInfo+columnInfo+commonInfo).strip('\t')
+                fo.write('%s\n' % oneLine)
+                if tbConfig.has_key('window') and \
+                        tbConfig['window_mode'] == 'tr':
+                    self._windowPage.append(self.__dealWindow(tbConfig, fillTr)) 
         #deal with table level(mode) window
         if tbConfig.has_key('window') and \
                 tbConfig['window_mode'] == 'table':

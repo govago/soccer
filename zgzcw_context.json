@@ -1,8 +1,11 @@
 {
     "params" : "round_interval,data_path,url_file",
-    "round_interval" : "2011002-2011060",
+    "round_interval" : "2012001-2012050",
     "data_path" : ".\\data\\",
     "url_file" : ".\\data\\zgzcw_bet_info.dat",
+    "url_file_fields" : "3",
+    "url_file_betid_idx" : "0",
+    "url_file_url_idx" : "2",
     "pages":
     {
         "zgzcw_bfyc" :

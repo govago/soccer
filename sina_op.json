@@ -1,0 +1,55 @@
+{
+    "url" : "http://odds.sports.sina.com.cn/liveodds/marker_list_old.php?m_id=2554580",
+    "params" : "betid,url",
+    "browser" : "sina_op",
+    "fail_record" : "sina_op_except",
+    "tables" :
+    {
+        "sina_op" :
+        {
+            "output_file" : "sina_op.dat",
+            "output_mode" : "a+",
+            "xpath" : "/html/body/table",
+            "skip_prefix" : "6",
+            "header" : "betid\t公司\t赔率-胜\t赔率-平\t赔率-负\t概率(%)-胜\t概率(%)-平\t概率(%)-负\t凯利指数-胜\t凯利指数-平\t凯利指数-负",
+            "columns" : "0,1,2,3,4,5,6,7,9",
+            "same_columns" : "平均欧赔",
+            "same_index" : "0",
+            "same_row_index" : "3",
+            "id_columns" : "@P@betid",
+            "window" : "sina_op_detail",
+            "window_mode" : "tr",
+            "window_params" : 
+            {
+                "url" : "@td[-1]@a@href",
+                "betid" : "@P@betid",
+                "company_id" : "__url@[mark=:]",
+                "company" : "@td[0]@.text"
+            },
+            "window_params_order" : "url,betid,company_id,company"
+        }
+    },
+    "windows" : 
+    {
+        "sina_op_detail" :
+        {
+            "url_prefix" : "",
+            "params" : "url,betid,company_id,company",
+            "browser" : "sina_op_detail",
+            "fail_record" : "sina_op_detail_except",
+            "tables" : 
+            {
+                "sina_op_detail" :
+                {
+                    "output_file" : "sina_op_detail.dat",
+                    "output_mode" : "a+",
+                    "xpath" : "/html/body/table",
+                    "skip_prefix" : "3",
+                    "header" : "betid\tcompany_id\tcompany\t赔率-胜\t赔率-平\t赔率-负\t变盘时间\t概率(%)-胜\t概率(%)-平\t概率(%)-负\t凯利指数-胜\t凯利指数-平\t凯利指数-负",
+                    "columns" : "0,1,2,3,4,5,6,7,8,9",
+                    "id_columns" : "@P@betid,@P@company_id,@P@company"
+                }
+            }
+        }
+    }
+}

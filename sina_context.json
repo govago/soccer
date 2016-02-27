@@ -1,0 +1,17 @@
+{
+    "params" : "round_interval,data_path,url_file",
+    "round_interval" : "2008003-2008050",
+    "data_path" : ".\\data\\",
+    "url_file" : ".\\data\\sina_op_info.dat",
+    "url_file_fields" : "2",
+    "url_file_betid_idx" : "0",
+    "url_file_url_idx" : "1",
+    "pages":
+    {
+        "sina_op" :
+        {
+            "page_config" : "sina_op.json",
+            "data_files" : "sina_op.dat,sina_op_detail.dat"
+        }
+    }
+}

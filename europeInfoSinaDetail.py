@@ -155,7 +155,6 @@ if __name__ == '__main__':
             if len(tmpFollows) > 0:
                 for tf in tmpFollows:
                     follows.append(tf)
-    #br.windows.current.close()
-    br.quit()
+    br.windows.current.close()
 
 
