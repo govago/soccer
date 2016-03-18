@@ -1,6 +1,6 @@
 {
     "params" : "round_interval,data_path,url_file",
-    "round_interval" : "2008003-2008050",
+    "round_interval" : "2009001-2009033",
     "data_path" : ".\\data\\",
     "url_file" : ".\\data\\sina_op_info.dat",
     "url_file_fields" : "2",

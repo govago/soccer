@@ -1,0 +1,49 @@
+{
+    "url" : "http://info.zgzcw.com/shtm/plays/2007/9/Play_Simp_101479.shtm",
+    "params" : "betid,url",
+    "browser" : "zgzcw_old",
+    "fail_record" : "zgzcw_old_except",
+    "base" :
+    {
+        "output_file" : "zgzcw_old_base.dat",
+        "output_mode" : "a+",
+        "column_order" : "betid,主队+主排名,客队+客排名,赛事+时间+场地+天气",
+        "betid" : "@P@betid",
+        "主队+主排名" : "@XPATH@/html/body/table[2]/tbody/tr[2]/td[1]",
+        "客队+客排名" : "@XPATH@/html/body/table[2]/tbody/tr[2]/td[3]",
+        "赛事+时间+场地+天气" : "@XPATH@/html/body/table[2]/tbody/tr[2]/td[2]"
+    },
+    "tables" :
+    {
+        "zd_last_10" :
+        {
+            "output_file" : "zgzcw_old_zd_last_10.dat",
+            "output_mode" : "a+",
+            "xpath" : "/html/body/table[7]/tbody/tr/td[1]/table",
+            "skip_prefix" : "2",
+            "header" : "betid\t比赛时间\t赛事\t主队VS客队\t结果",
+            "columns" : "0,1,2,5",
+            "id_columns" : "@P@betid"
+        },
+        "kd_last_10" :
+        {
+            "output_file" : "zgzcw_old_kd_last_10.dat",
+            "output_mode" : "a+",
+            "xpath" : "/html/body/table[7]/tbody/tr/td[3]/table",
+            "skip_prefix" : "2",
+            "header" : "betid\t比赛时间\t赛事\t主队VS客队\t结果",
+            "columns" : "0,1,2,5",
+            "id_columns" : "@P@betid"
+        },
+        "jiaozhan" :
+        {
+            "output_file" : "zgzcw_old_jiaozhan.dat",
+            "output_mode" : "a+",
+            "xpath" : "/html/body/table[6]/tbody/tr/td/table[1]",
+            "skip_prefix" : "2",
+            "header" : "betid\t比赛时间\t赛事\t主队VS客队\t结果",
+            "columns" : "0,1,2,6",
+            "id_columns" : "@P@betid"
+        }
+    }
+}

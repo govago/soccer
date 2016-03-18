@@ -1,0 +1,17 @@
+{
+    "params" : "round_interval,data_path,url_file",
+    "round_interval" : "2009042-2009058",
+    "data_path" : ".\\data\\",
+    "url_file" : ".\\data\\zgzcw_bet_info.dat",
+    "url_file_fields" : "3",
+    "url_file_betid_idx" : "0",
+    "url_file_url_idx" : "2",
+    "pages":
+    {
+        "zgzcw_old" :
+        {
+            "page_config" : "zgzcw_old.json",
+            "data_files" : "zgzcw_old_base.dat,zgzcw_old_zd_last_10.dat,zgzcw_old_kd_last_10.dat,zgzcw_old_jiaozhan.dat"
+        }
+    }
+}

@@ -1,6 +1,6 @@
 {
     "params" : "round_interval,data_path,url_file",
-    "round_interval" : "2012001-2012050",
+    "round_interval" : "2016019-2016023",
     "data_path" : ".\\data\\",
     "url_file" : ".\\data\\zgzcw_bet_info.dat",
     "url_file_fields" : "3",

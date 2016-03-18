@@ -9,13 +9,13 @@
         "output_mode" : "a+",
         "column_order" : "betid,主队,客队,时间,赛果,赛事,主排名,客排名",
         "betid" : "@P@betid",
-        "主队" : "@XPATH@/html/body/div[6]/div[2]/div/div[1]/a",
-        "客队" : "@XPATH@/html/body/div[6]/div[2]/div/div[2]/a",
-        "时间" : "@XPATH@/html/body/div[6]/div[3]/div[1]/span",
-        "赛果" : "@XPATH@/html/body/div[6]/div[2]/div/div[3]",
+        "主队" : "@XPATH@/html/body/div[5]/div[2]/div/div[1]/a",
+        "客队" : "@XPATH@/html/body/div[5]/div[2]/div/div[2]/a",
+        "时间" : "@XPATH@/html/body/div[5]/div[3]/div[1]/span",
+        "赛果" : "@XPATH@/html/body/div[5]/div[2]/div/div[3]",
         "赛事" : "@XPATH@//*[@id=\"lc_head\"]/h2/p",
-        "主排名" : "@XPATH@/html/body/div[6]/div[2]/div/div[6]/div[1]",
-        "客排名" : "@XPATH@/html/body/div[6]/div[2]/div/div[6]/div[3]"
+        "主排名" : "@XPATH@/html/body/div[5]/div[2]/div/div[6]/div[1]",
+        "客排名" : "@XPATH@/html/body/div[5]/div[2]/div/div[6]/div[3]"
     },
     "tables" :
     {
