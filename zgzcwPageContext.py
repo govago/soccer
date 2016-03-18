@@ -41,7 +41,7 @@ if __name__ == '__main__':
     pc.process()
 
     BrowserManager.closeBrowser()
-    shutdownStr = 'shutdown.exe -f -s -t %s' % int(10)
+    shutdownStr = 'shutdown.exe -f -s -t %s' % int(300)
     print shutdownStr
     os.system( shutdownStr )
     

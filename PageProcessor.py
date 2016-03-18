@@ -41,6 +41,13 @@ class BrowserManager:
             BrowserManager.browserMap[browserName] = br
             return br
     @staticmethod
+    def reInitBrowser(browserName):
+        browserMap[browserName].quit()
+        del browserMap[browserName]
+        br = Browser('firefox')
+        browserMap[browserName] = br
+        return br
+    @staticmethod
     def closeBrowser():
         while len(BrowserManager.browserMap) > 0:
             for k in BrowserManager.browserMap.keys():
@@ -60,6 +67,7 @@ class PageProcessor:
             self._params[paramName] = config[paramName]
         #get browser
         self._br = BrowserManager.getBrowser(config['browser'])
+        self._brName = config['browser']
         self._base = None
         #init base if needed.
         if config.has_key('base'):
@@ -99,10 +107,14 @@ class PageProcessor:
         if self._urlPrefix != None:
             url = self._urlPrefix + self._params['url']
         print '--load url: %s' % url
-        self._br.visit(url)
         success = False
         try:
-            self._br.visit(url)
+            try:
+                self._br.visit(url)
+            except:
+                self._br = None
+                self._br = BrowserManager.reInitBrowser(self._brName)
+                self._br.visit(url)
             retryTimes = 0
             while not self._br.status_code.is_success():
                 time.sleep(random.randint(20,60))
@@ -117,9 +129,13 @@ class PageProcessor:
         except:
             print 'Failed to visit: %s' % url
             time.sleep(90)
+        title = self._br.title
+        if title is not None and title.startswith('error.'):
+            success = False
         if not success:
             self._failRecord.write('%s\t%s\n' % \
                     (self.__paramString(), url))
+        return success
     #deal with base information
     def dealBase(self):
         fo = None
@@ -142,6 +158,9 @@ class PageProcessor:
                     valEle = self._br.find_by_xpath(v[7:]).first
                     val = unicode(valEle.text).replace('\n', '')
                     val = val.replace('\t', ' ')
+                    val = val.replace('--->', '')
+                    val = val.replace('<---', '')
+                    val = val.replace('----', '')
                     vals.append(val)
                 else:
                     vals.append('None')
@@ -386,7 +405,9 @@ class PageProcessor:
         return
     #deal with whole flow
     def process(self):
-        self.dealLoad()
+        suc = self.dealLoad()
+        if not suc:
+            return self._windowPage
         if None != self._base:
             self.dealBase()
         for tbConfig in self._tables:

@@ -52,6 +52,9 @@ class PageContext:
         fi = open(self._params['url_file'], 'r')
         line = fi.readline().strip()
         while len(line) > 2:
+            if line.startswith('#'):
+                line = fi.readline().strip()
+                continue
             fs = line.split('\t')
             if len(fs) < self._urlFileFields:
                 line = fi.readline().strip()
@@ -83,13 +86,21 @@ class PageContext:
                 wpp = windowPages.pop(0)
                 windowPages.extend(wpp.process())
         return
+    def removeData(self):
+        for page in self._pages:
+            dfs = page['data_files'].strip().split(',')
+            for df in dfs:
+                if os.path.exists(df):
+                    os.remove(df)
     def moveData(self):
         for page in self._pages:
             dfs = page['data_files'].strip().split(',')
             for df in dfs:
                 newName = self._dataPath + df + '.%s' % self._roundInterval
                 if os.path.exists(df):
-                    shutil.move(df, newName)
+                    sdf = str(df)
+                    snewName= str(newName)
+                    shutil.copy(sdf, snewName)
     def moveDataWithExcept(self, curBetid):
         roundInterval = self._roundInterval
         startRound = int(roundInterval.split('-')[0])
@@ -102,12 +113,15 @@ class PageContext:
             for df in dfs:
                 newName = self._dataPath + df + '.%d-%d' % (startRound, curRound)
                 if os.path.exists(df):
-                    shutil.move(df, newName)
+                    sdf = str(df)
+                    snewName= str(newName)
+                    shutil.copy(sdf, snewName)
         return
     def process(self):
         dealPageNum = 0
         curBetid = None
         try:
+            self.removeData()
             for betid, url in self.yieldRound():
                 curBetid = betid
                 self.dealPages(betid, url)
